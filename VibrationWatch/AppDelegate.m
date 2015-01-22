@@ -15,7 +15,39 @@
     // Override point for customization after application launch.
     return YES;
 }
-							
+
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    
+    NSLog(@"hogehoge");
+    
+    [self doVibrate:2
+               body:@"30分経過"
+       notification:notification];
+
+    [self doVibrate:3
+               body:@"45分経過"
+       notification:notification];
+    
+}
+
+
+-(void)doVibrate:(NSInteger )limit body:(NSString *)bodyString notification:(UILocalNotification *)notification
+{
+    NSInteger count=0;
+    
+    if([notification.alertBody isEqualToString:bodyString]){
+        while(count<limit){
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            count++;
+            [NSThread sleepForTimeInterval:0.5];
+        }
+        AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
+    }
+}
+
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
